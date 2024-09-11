@@ -1,5 +1,5 @@
 
-## Setting Up Dataset
+## Setting Up Dataset (Manual)
 
 1. **Download the HMDB video dataset** from [here](https://serre-lab.clps.brown.edu/resource/hmdb-a-large-human-motion-database/#Downloads).
 
@@ -20,6 +20,16 @@
    - `wave`
 
 6. **Move the remaining video folders** to `non_target_videos`.
+
+## Setting Up Dataset (Using `task0.py`)
+
+1. **Download the HMDB video dataset** from [here](https://serre-lab.clps.brown.edu/resource/hmdb-a-large-human-motion-database/#Downloads) and save it as `hmdb51_org.rar` in the current folder.
+
+2. Set up the environment using the instructions in **Setting Up Environment**.
+
+3. **Run the script**:
+
+   ```python3 task0.py```
 
 ## Setting Up Environment
 
