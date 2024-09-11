@@ -1,3 +1,4 @@
+## IMPORTS
 import torch
 import cv2
 import torch.nn as nn
@@ -5,13 +6,13 @@ from torchvision.models.video import r3d_18
 import numpy as np
 import sys
 
-# print(torch.backends.mps.is_available())
 
 # Global variables to store hook outputs
 layer3_output = None
 layer4_output = None
 avgpool_output = None
 
+## DEFINING FUNCTIONS
 
 def hook_fn(module, input, output):
     global layer3_output, layer4_output, avgpool_output
@@ -71,16 +72,21 @@ def extract_feature(layer, layer3_output, layer4_output, avgpool_output):
     return tensor_final
 
 
+## PROGRAM CODE STARTS FROM HERE
+
 # video = "cartwheel/(Rad)Schlag_die_Bank!_cartwheel_f_cm_np1_le_med_0.avi"
 video = sys.argv[1]
+# layer = "R3D18-AvgPool-512"
+layer = sys.argv[2]
 video_tensor = load_video(video=video)
 # print("Video tensor shape before model:", video_tensor.shape)
 
 # Load and prepare the model
 model = r3d_18()
+device = torch.device('cuda' if torch.cuda.is_available() else 
+                       'mps' if torch.backends.mps.is_available() else 
+                       'cpu')
 
-#use cuda here
-device = torch.device('mps' if torch.backends.mps.is_available() else 'cpu')
 model.to(device)
 model.eval()
 
@@ -106,8 +112,6 @@ hook3.remove()
 # print(f"Layer4 output shape: {layer4_output.shape if layer4_output is not None else 'No output'}")
 # print(f"AvgPool output shape: {avgpool_output.shape if avgpool_output is not None else 'No output'}")
 
-layer = "R3D18-AvgPool-512"
-layer = sys.argv[2]
 feature = extract_feature(layer=layer,
                           layer3_output=layer3_output, 
                           layer4_output=layer4_output, 
@@ -123,6 +127,4 @@ feature_np_rounded = np.round(feature_np, decimals=5)
 # np.savetxt("feature.txt", feature_np_rounded)
 # print(feature_np)
 
-print(np.array2string(feature_np_rounded, formatter={'float_kind':lambda x: f"{x:.5f}"}))
-
-# print("Feature rounded has been saved to feature.txt")
+print(np.array2string(feature_np_rounded, formatter={'float_kind':lambda x: f"{x:.5f}"}))# print("Feature rounded has been saved to feature.txt")
