@@ -1,17 +1,53 @@
 
-Setting up dataset:
-* Download HMDB video dataset from https://serre-lab.clps.brown.edu/resource/hmdb-a-large-human-motion-database/#Downloads
-* Make a folder hmdb51_extracted
-* Make 2 folders inside hmdb51_extracted, target_videos and non_target_videos
-* Extract zip from dowloaded dataset and move [cartwheel,drink,ride bike,sword,sword exercise,wave] to target_videos folder.
-* Move rest video folders to non_target_videos
+## Setting Up Dataset
 
-Setting up environment
-* Create a new environment in python: python3 -m venv phase1
-* pip3 install -r requirements.txt
+1. **Download the HMDB video dataset** from [here](https://serre-lab.clps.brown.edu/resource/hmdb-a-large-human-motion-database/#Downloads).
+
+2. **Create a folder** named `hmdb51_extracted`.
+
+3. **Inside `hmdb51_extracted`, create two folders**:
+   - `target_videos`
+   - `non_target_videos`
+
+4. **Extract the downloaded dataset zip** file.
+
+5. **Move the following video folders to `target_videos`**:
+   - `cartwheel`
+   - `drink`
+   - `ride bike`
+   - `sword`
+   - `sword exercise`
+   - `wave`
+
+6. **Move the remaining video folders** to `non_target_videos`.
+
+## Setting Up Environment
+
+1. **Create a new Python environment**:
+
+   ```bash python3 -m venv phase1```
+2. **Activate the environment**:
+    - On macOS/Linux:
+        ```source phase1/bin/activate```
+    - On Windows:
+        ```phase1\Scripts\activate```
+
+3. **Install the required packages**:
+
+    ```pip3 install -r requirements.txt```
 
 
-Commands: 
-    python task0.py 'cartwheel/(Rad)Schlag_die_Bank!_cartwheel_f_cm_np1_le_med_0.avi' "R3D18-Layer3-512"
-    python task0.py 'cartwheel/(Rad)Schlag_die_Bank!_cartwheel_f_cm_np1_le_med_0.avi' "R3D18-Layer4-512"
-    python task0.py 'cartwheel/(Rad)Schlag_die_Bank!_cartwheel_f_cm_np1_le_med_0.avi' "R3D18-AvgPool-512"
+## Running the Script
+
+To extract features from videos using different layers and models, use the following command:
+
+ ```python3 task0.py 'relative/path/to/video/from/target_videos/folder' 'Model-Layer' ```
+
+## Examples
+
+- `python task0.py 'cartwheel/(Rad)Schlag_die_Bank!_cartwheel_f_cm_np1_le_med_0.avi' "R3D18-Layer3-512"`
+- `python task0.py 'cartwheel/(Rad)Schlag_die_Bank!_cartwheel_f_cm_np1_le_med_0.avi' "R3D18-Layer4-512"`
+- `python task0.py 'cartwheel/(Rad)Schlag_die_Bank!_cartwheel_f_cm_np1_le_med_0.avi' "R3D18-AvgPool-512"`
+- `python task0.py 'drink/21_drink_u_nm_np1_fr_goo_9.avi' "R3D18-Layer3-512"`
+- `python task0.py 'drink/21_drink_u_nm_np1_fr_goo_9.avi' "R3D18-Layer4-512"`
+- `python task0.py 'drink/21_drink_u_nm_np1_fr_goo_9.avi' "R3D18-AvgPool-512"`
