@@ -53,4 +53,4 @@ To extract features from videos using different layers and models, use the follo
 - `python task0.py 'drink/21_drink_u_nm_np1_fr_goo_9.avi' "R3D18-AvgPool-512"`
 
 ## Notes
-* \* Example commands are tailored for Linux/Mac OS. Please adjust them for Windows as needed.
+* \*Example commands are tailored for Linux/Mac OS. Please adjust them for Windows as needed.
