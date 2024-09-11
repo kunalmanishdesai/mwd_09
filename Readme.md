@@ -41,16 +41,16 @@
 
 To extract features from videos using different layers and models, use the following command:
 
- ```python3 task0.py 'relative/path/to/video/from/target_videos/folder' 'Model-Layer' ```
+ ```python3 task1.py 'relative/path/to/video/from/target_videos/folder' 'Model-Layer' ```
 
 ## Examples\*
 
-- `python task0.py 'cartwheel/(Rad)Schlag_die_Bank!_cartwheel_f_cm_np1_le_med_0.avi' "R3D18-Layer3-512"`
-- `python task0.py 'cartwheel/(Rad)Schlag_die_Bank!_cartwheel_f_cm_np1_le_med_0.avi' "R3D18-Layer4-512"`
-- `python task0.py 'cartwheel/(Rad)Schlag_die_Bank!_cartwheel_f_cm_np1_le_med_0.avi' "R3D18-AvgPool-512"`
-- `python task0.py 'drink/21_drink_u_nm_np1_fr_goo_9.avi' "R3D18-Layer3-512"`
-- `python task0.py 'drink/21_drink_u_nm_np1_fr_goo_9.avi' "R3D18-Layer4-512"`
-- `python task0.py 'drink/21_drink_u_nm_np1_fr_goo_9.avi' "R3D18-AvgPool-512"`
+- `python task1.py 'cartwheel/(Rad)Schlag_die_Bank!_cartwheel_f_cm_np1_le_med_0.avi' "R3D18-Layer3-512"`
+- `python task1.py 'cartwheel/(Rad)Schlag_die_Bank!_cartwheel_f_cm_np1_le_med_0.avi' "R3D18-Layer4-512"`
+- `python task1.py 'cartwheel/(Rad)Schlag_die_Bank!_cartwheel_f_cm_np1_le_med_0.avi' "R3D18-AvgPool-512"`
+- `python task1.py 'drink/21_drink_u_nm_np1_fr_goo_9.avi' "R3D18-Layer3-512"`
+- `python task1.py 'drink/21_drink_u_nm_np1_fr_goo_9.avi' "R3D18-Layer4-512"`
+- `python task1.py 'drink/21_drink_u_nm_np1_fr_goo_9.avi' "R3D18-AvgPool-512"`
 
 ## Notes
 * \*Example commands are tailored for Linux/Mac OS. Please adjust them for Windows as needed.
