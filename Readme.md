@@ -29,7 +29,9 @@
 
 3. **Run the script**:
 
-   ```python3 task0.py```
+   ```python3 task0.py "./hmdb51_extracted/" "hmdb51_org.rar"```
+
+   ```python3 task0.py "./hmdb51_org_stips/" "hmdb51_org_stips.rar"```
 
 ## Setting Up Environment<a name="setting-up-environment"></a>
 
