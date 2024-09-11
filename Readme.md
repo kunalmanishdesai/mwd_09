@@ -25,13 +25,13 @@
 
 1. **Download the HMDB video dataset** from [here](https://serre-lab.clps.brown.edu/resource/hmdb-a-large-human-motion-database/#Downloads) and save it as `hmdb51_org.rar` in the current folder.
 
-2. Set up the environment using the instructions in **Setting Up Environment**.
+2. Set up the environment using the instructions in [Setting Up Environment](#setting-up-environment).
 
 3. **Run the script**:
 
    ```python3 task0.py```
 
-## Setting Up Environment
+## Setting Up Environment<a name="setting-up-environment"/>
 
 1. **Create a new Python environment**:
 
