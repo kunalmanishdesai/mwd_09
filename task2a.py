@@ -95,11 +95,6 @@ def process_folder(folder_path):
         results = []
         for future in as_completed(futures):
             results.append(future.result())
-
-    
-    # results = []
-    # for file in files:
-    #     results.append(process_file(file_path=file))
     
     # Concatenate all dataframes
     final_df = pd.concat(results, ignore_index=True)
