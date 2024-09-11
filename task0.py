@@ -128,3 +128,5 @@ feature_np_rounded = np.round(feature_np, decimals=5)
 # print(feature_np)
 
 print(np.array2string(feature_np_rounded, formatter={'float_kind':lambda x: f"{x:.5f}"}))# print("Feature rounded has been saved to feature.txt")
+print("Video: ", video)
+print("Feature size:", feature.shape)
