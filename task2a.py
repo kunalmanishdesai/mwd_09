@@ -18,12 +18,6 @@ def read_stip_file(file_path):
                 data.append([float(x) for x in parts])
 
     data_array = np.array(data)
-    
-    # Ensure the array is 2D
-    if data_array.ndim == 1:
-        # Reshape if it’s 1D (only one row in the file)
-        data_array = data_array.reshape(1, -1)
-    
     return data_array
     
 
