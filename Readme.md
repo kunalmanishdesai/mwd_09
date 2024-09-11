@@ -9,7 +9,7 @@
    - `target_videos`
    - `non_target_videos`
 
-4. **Extract the downloaded dataset zip** file.
+4. **Extract all RAR files from the downloaded dataset, including any nested RAR files contained within them.**
 
 5. **Move the following video folders to `target_videos`**:
    - `cartwheel`
