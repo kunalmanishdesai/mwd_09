@@ -5,6 +5,7 @@ import torch.nn as nn
 from torchvision.models.video import r3d_18
 import numpy as np
 import sys
+import os
 
 
 # Global variables to store hook outputs
@@ -26,7 +27,7 @@ def hook_fn(module, input, output):
 
 
 def load_video(video):
-    path = "./hmdb51_extracted/target_videos/" + video
+    path = os.path.join(".", "hmdb51_extracted", "target_videos", video)
     cap = cv2.VideoCapture(path)
 
     assert cap.isOpened(), f"Failed to open video file {path}"
