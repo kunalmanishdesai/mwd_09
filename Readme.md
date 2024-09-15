@@ -47,6 +47,8 @@
     ```pip3 install -r requirements.txt```
 
 
+# Stuff from here isnt updated and might not work.
+
 ## Task 1
 
 To extract features from videos using different layers and models, use the following command:
