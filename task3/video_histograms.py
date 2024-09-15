@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import os
+from scipy.spatial.distance import cdist
 
 def get_total_frames(video_path):
     """Manually count the total number of frames in the video."""
@@ -39,29 +40,34 @@ def get_key_frames(video_path):
     # Return the three frames (first, middle, last)
     return key_frames[0], key_frames[1], key_frames[2]
 
-def compute_rgb_histogram_for_cell(cell, n_bins):
-    """Compute the RGB histogram for a single cell."""
-    # Calculate the histogram for the Red channel
-    hist_r = cv2.calcHist([cell], [0], None, [n_bins], [0, 256])
-    
-    # Calculate the histogram for the Green channel
-    hist_g = cv2.calcHist([cell], [1], None, [n_bins], [0, 256])
-    
-    # Calculate the histogram for the Blue channel
-    hist_b = cv2.calcHist([cell], [2], None, [n_bins], [0, 256])
-    
-    # Normalize each histogram
-    hist_r = cv2.normalize(hist_r, hist_r).flatten()
-    hist_g = cv2.normalize(hist_g, hist_g).flatten()
-    hist_b = cv2.normalize(hist_b, hist_b).flatten()
-    
-    # Concatenate the histograms for each channel
-    hist = np.concatenate([hist_r, hist_g, hist_b])
+def convert_rgb_to_lab(image):
+    """Convert an RGB image to LAB color space."""
+    return cv2.cvtColor(image, cv2.COLOR_BGR2Lab)
 
+def compute_lab_histogram_for_cell(cell, n_bins):
+    """Compute the LAB histogram for a single cell using predefined bin centers."""
+    # Define 12 LAB bin centers
+    bin_centers = np.array([
+        [25, -40, -40], [25, 40, 40], [50, 0, 0], [50, -40, 40],
+        [50, 40, -40], [75, 0, 60], [75, -60, 0], [75, 60, 0],
+        [75, 0, -60], [90, 0, 80], [90, -80, 0], [90, 80, 0]
+    ])
+
+    lab_cell = convert_rgb_to_lab(cell)
+    h, w = lab_cell.shape[:2]
+    pixels = lab_cell.reshape(-1, 3)
+
+    # Compute distances from each pixel to each bin center
+    distances = cdist(pixels, bin_centers)
+    bin_indices = np.argmin(distances, axis=1)
+    
+    # Compute histogram counts
+    hist, _ = np.histogram(bin_indices, bins=np.arange(n_bins + 1))
+    
     return hist
 
 def process_frame_in_cells(frame, r, n_bins):
-    """Divide a frame into cells and compute RGB histograms for each cell."""
+    """Divide a frame into cells and compute LAB histograms for each cell."""
     height, width = frame.shape[:2]
     cell_h = height // r
     cell_w = width // r
@@ -72,13 +78,13 @@ def process_frame_in_cells(frame, r, n_bins):
             y_start, y_end = i * cell_h, (i + 1) * cell_h
             x_start, x_end = j * cell_w, (j + 1) * cell_w
             cell = frame[y_start:y_end, x_start:x_end]
-            hist = compute_rgb_histogram_for_cell(cell, n_bins)
+            hist = compute_lab_histogram_for_cell(cell, n_bins)
             histograms.append(hist)
 
     return histograms
 
 def extract_histograms_from_frames(video_path, r, n_bins):
-    """Extract RGB histograms from the first, middle, and last frames of a video."""
+    """Extract LAB histograms from the first, middle, and last frames of a video."""
     # Get the key frames (first, middle, last)
     first_frame, middle_frame, last_frame = get_key_frames(video_path)
 
@@ -107,7 +113,7 @@ if __name__ == "__main__":
 
     # Parameters: r (grid size) and n_bins (number of histogram bins)
     r = 4  # Divide each frame into 4x4 cells
-    n_bins = 12  # Create a 12-bin histogram for each channel of the cell
+    n_bins = 12  # Create a 12-bin histogram for each cell
 
     # Extract and concatenate histograms from the video
     concatenated_histograms = extract_histograms_from_frames(video_path, r, n_bins)
