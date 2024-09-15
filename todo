@@ -1,0 +1,12 @@
+Todo task5, use code from task1/feature_extraction.py, task2/get_histogram_for_file.py, task3/video_histograms.py to complete 
+task 5 in which given a video we should be able to find neighbouring videos.
+
+Results in task4 folder should help.
+
+Suggestions for distance function:
+
+task 1] -- 512 unit feature, cosine sim for first 3 models
+task 2] -- 960 unit feature,  chi squared and histogram_intersection
+task 3] -- 1728 unit feature, histogram_intersectIon and bhattachariya distance
+
+My suggestion would be to start simple with euclidean and if it works go ahead with rest.
