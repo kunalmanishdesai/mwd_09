@@ -101,6 +101,6 @@ if __name__ == "__main__":
     # Print results for all models
     print("\nAll models results:")
     print(f"{'Rank':<5} {'Model':<10} {'Distance Function':<30} {'File Name':<75} {'Distance':<10}")
-    print('-' * 125)
+    print('-' * 140)
     for rank, (model, file_name, distance) in enumerate(all_results, start=1):
         print(f"{rank:<5} {model:<10} {get_distance_function(model):<30} {file_name:<75} {distance:<10.4f}")
