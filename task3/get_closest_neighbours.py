@@ -34,8 +34,32 @@ def compute_emd(hist1, hist2):
     
     return emd
 
-def process_video_COL_HIST(video_path, csv_file_path, top_k=10):
-    """Process a single video, compute its histogram, and return the top_k closest videos."""
+def compute_histogram_intersection(hist1, hist2):
+    """Compute histogram intersection distance between two histograms."""
+    # Reshape histograms to match the number of bins
+    hist1 = hist1.reshape(-1)
+    hist2 = hist2.reshape(-1)
+    
+    # Compute the histogram intersection
+    intersection = np.sum(np.minimum(hist1, hist2))
+    
+    # Return the distance as 1 - intersection
+    return 1 - intersection
+
+def compute_bhattacharyya_distance(hist1, hist2):
+    """Compute Bhattacharyya distance between two histograms."""
+    # Reshape histograms to match the number of bins
+    hist1 = hist1.reshape(-1)
+    hist2 = hist2.reshape(-1)
+    
+    # Compute the Bhattacharyya coefficient
+    bc = np.sum(np.sqrt(hist1 * hist2))
+    
+    # Return the distance
+    return -np.log(bc + 1e-10)  # Add a small constant to avoid log(0)
+
+def process_video_COL_HIST(video_path, csv_file_path, distance_function="emd", top_k=10):
+    """Process a single video, compute its histogram, and return the top_k closest videos based on the selected distance function."""
     # Extract histogram from the video
     histogram = extract_histograms_from_frames(video_path, R, N_BINS)
     
@@ -52,26 +76,50 @@ def process_video_COL_HIST(video_path, csv_file_path, top_k=10):
             file_names.append(row[0])
             existing_histograms.append(np.array(row[2:], dtype=np.float32))
     
-    # Compare the computed histogram with each existing histogram using EMD
-    emd_results = []
+    # Compare the computed histogram with each existing histogram using the selected distance function
+    distance_results = []
     for existing_hist in existing_histograms:
-        emd = compute_emd(histogram, existing_hist)
-        emd_results.append(emd)
+        if distance_function == 'emd':
+            distance = compute_emd(histogram, existing_hist)
+        elif distance_function == 'intersection':
+            distance = compute_histogram_intersection(histogram, existing_hist)
+        elif distance_function == 'bhattacharyya':
+            distance = compute_bhattacharyya_distance(histogram, existing_hist)
+        else:
+            raise ValueError(f"Distance function '{distance_function}' is not recognized.")
+        distance_results.append(distance)
 
-    # Sort EMD results and get the top_k closest videos
-    sorted_indices = np.argsort(emd_results)[:top_k]
-    closest_files = [(file_names[i], emd_results[i]) for i in sorted_indices]
+    # Sort distance results and get the top_k closest videos
+    sorted_indices = np.argsort(distance_results)[:top_k]
+    closest_files = [(file_names[i], distance_results[i]) for i in sorted_indices]
 
     return closest_files
 
 if __name__ == "__main__":
+    import sys
+    
     # Parameters
-    video_path = '../hmdb51_extracted/target_videos/cartwheel/(Rad)Schlag_die_Bank!_cartwheel_f_cm_np1_le_med_0.avi'  # Path to your video file
-    csv_file_path = '../task4/histograms.csv'  # Path to the CSV file with existing histograms
+    if len(sys.argv) != 4:
+        print("Usage: python script.py <video_path> <csv_file_path> <distance_function> <top_k>")
+        sys.exit(1)
 
-    # Process the video and get the top 10 closest videos
-    closest_videos = process_video_COL_HIST(video_path, csv_file_path, top_k=10)
+    video_path = sys.argv[1]
+    csv_file_path = sys.argv[2]
+    distance_function = sys.argv[3]
+    try:
+        top_k = int(sys.argv[4])
+    except ValueError:
+        print("Error: <top_k> must be an integer.")
+        sys.exit(1)
 
-    # Print the closest video names and their EMD distances
-    for file_name, emd in closest_videos:
-        print(f"File: {file_name}, EMD: {emd}")
+    # Process the video and get the top_k closest videos
+    try:
+        closest_videos = process_video_COL_HIST(video_path, csv_file_path, distance_function, top_k)
+        
+        # Print the closest video names and their distances
+        print(f"Top {top_k} closest videos using '{distance_function}' distance:")
+        for file_name, distance in closest_videos:
+            print(f"File: {file_name}, Distance: {distance:.4f}")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")

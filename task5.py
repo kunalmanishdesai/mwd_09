@@ -24,7 +24,7 @@ def process_video(video_path, model_name, top_k=10):
     """
     # Call the appropriate model function based on model_name
     if model_name == "COL-HIST":
-        return process_video_COL_HIST(video_path, "./task4/histograms.csv", top_k)
+        return process_video_COL_HIST(video_path, "./task4/histograms.csv","intersection", top_k)
     
     # Add elif statements for other models
     # elif model_name == "BOF-HOF-480":
@@ -52,7 +52,7 @@ def get_distance_function(model_name):
         str: The distance function used.
     """
     distance_functions = {
-        "COL-HIST": "Earth Mover Distance",
+        "COL-HIST": "Histogram Intersection",
         "BOF-HOF-480": "Euclidean Distance",  # Example distance function
         "BOF-HOG-480": "Cosine Similarity",   # Example distance function
         "R3D18-AvgPool-512": "L2 Norm",        # Example distance function
