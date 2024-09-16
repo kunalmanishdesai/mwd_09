@@ -94,9 +94,9 @@ def extract_feature(layer, video_path):
     return feature_np_rounded
 
 if __name__ == "__main__":
-    import sys
-    video_path = sys.argv[1]
-    layer = sys.argv[2]
+    
+    video_path = "../hmdb51_extracted/target_videos/ride_bike/Radfahren_um_die_Aggertalsperre_06_09_2009_ride_bike_f_cm_np2_le_med_16.avi"
+    layer = "R3D18-Layer3-512"  # Specify the layer you're interested in
     feature = extract_feature(layer, video_path)
     print("Feature size:", feature.shape)
     print(np.array2string(feature, formatter={'float_kind':lambda x: f"{x:.5f}"}))
