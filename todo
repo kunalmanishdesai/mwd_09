@@ -10,3 +10,5 @@ task 2] -- 960 unit feature,  chi squared and histogram_intersection
 task 3] -- 576 unit feature, histogram_intersectIon and bhattachariya distance
 
 My suggestion would be to start simple with euclidean and if it works go ahead with rest.
+
+Check issue for BOG-960.
