@@ -66,8 +66,8 @@ def process_file(file_path):
         file_path = file_path.replace('hmdb51_extracted', 'hmdb51_org_stips')
     
     # Hardcoded cluster center file paths
-    hog_cluster_file = '../kmeans_results/combined_hog_cluster_centers.csv'
-    hof_cluster_file = '../kmeans_results/combined_hof_cluster_centers.csv'
+    hog_cluster_file = './kmeans_results/combined_hog_cluster_centers.csv'
+    hof_cluster_file = './kmeans_results/combined_hof_cluster_centers.csv'
     
     hog_centers_df, hof_centers_df = load_cluster_centers(hog_cluster_file, hof_cluster_file)
 

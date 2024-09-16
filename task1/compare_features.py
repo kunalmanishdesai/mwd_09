@@ -6,9 +6,9 @@ from feature_extraction import extract_feature  # Importing the function from fe
 def load_features_from_csv(layer):
     """Load features from predefined CSV files into a DataFrame based on the layer."""
     csv_files = {
-        'R3D18-Layer3-512': '../task4/features_layer3.csv',
-        'R3D18-Layer4-512': '../task4/features_layer4.csv',
-        'R3D18-AvgPool-512': '../task4/features_avgpool.csv'
+        'R3D18-Layer3-512': './task4/features_layer3.csv',
+        'R3D18-Layer4-512': './task4/features_layer4.csv',
+        'R3D18-AvgPool-512': './task4/features_avgpool.csv'
     }
     
     if layer not in csv_files:
@@ -19,8 +19,15 @@ def load_features_from_csv(layer):
     
     return features_df
 
-def find_k_closest_neighbors(video_features, all_features_df, k):
-    """Find the k closest neighbors to the given video features using cosine distance."""
+def R3D18(video_path, layer, k):
+    """Process video features and find k closest neighbors using cosine distance."""
+    
+    # Extract features from the video
+    video_features = extract_feature(layer, video_path)
+    
+    # Load features from CSV files
+    all_features_df = load_features_from_csv(layer)
+    
     # Extract histograms from DataFrame
     all_histograms = []
     for _, row in all_features_df.iterrows():
@@ -43,27 +50,21 @@ def find_k_closest_neighbors(video_features, all_features_df, k):
     closest_neighbors = all_features_df.iloc[closest_indices].copy()
     closest_neighbors['distance'] = distances[closest_indices, 0]
     
-
-    # Select only the 'video_name' and 'distance' columns
-    results = closest_neighbors[['filename', 'distance']]
+    # Select only the 'filename' (or 'video_name') and 'distance' columns
+    results_df = closest_neighbors[['filename', 'distance']]
     
-    return results
+    # Convert DataFrame to list of dictionaries
+    results_tuples = list(results_df.itertuples(index=False, name=None))
+    
+    return results_tuples
 
 if __name__ == "__main__":
-    
-    # Extract features from the video
-    video_path = "../hmdb51_extracted/target_videos/drink/Oceans13_drink_h_nm_np1_fr_goo_3.avi"
-
-    print(video_path)
-    layer = "R3D18-AvgPool-512"  # Specify the layer you're interested in
-    feature = extract_feature(layer, video_path)
-    
-    # Load features from CSV files
-    all_features_df = load_features_from_csv(layer)
-    
-    # Find k closest neighbors
+    # Example usage
+    video_path = "../hmdb51_extracted/target_videos/ride_bike/Radfahren_um_die_Aggertalsperre_06_09_2009_ride_bike_f_cm_np2_le_med_16.avi"
+    layer = "R3D18-Layer4-512"  # Specify the layer you're interested in
     k = 10  # Set the number of closest neighbors you want
-    closest_neighbors = find_k_closest_neighbors(feature, all_features_df, k)
-    
+
+    results = R3D18(video_path, layer, k)
     print("Closest neighbors:")
-    print(closest_neighbors)
+    for item in results:
+        print(item)

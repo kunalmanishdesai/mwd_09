@@ -35,7 +35,7 @@ def get_top_k_neighbors(distances, k):
     distances.sort(key=lambda x: x[1])  # Sort by distance (ascending order)
     return distances[:k]  # Return the top k closest neighbors
 
-def find_top_k_neighbors(video_path, csv_file, k):
+def bof_960(video_path, csv_file, k):
     """Find the top k neighbors for a given video by comparing histograms."""
     
     # Check if "hmdb51_extracted" is in the video path and replace it
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     csv_file = '../task4/processed_histograms.csv'  # CSV with precomputed histograms and filenames
     k_top = 10
 
-    top_k_videos = find_top_k_neighbors(video_path, csv_file, k_top)
+    top_k_videos = bof_960(video_path, csv_file, k_top)
     
     # Output the top k closest videos
     for filename, distance in top_k_videos:
