@@ -63,7 +63,7 @@ def process_folder(folder_path):
 
 def main():
     base_dir = "../hmdb51_extracted/target_videos/"
-    folders = [f for f in glob.glob(os.path.join(base_dir, '*')) if os.path.isdir(f) and "sword_exercise" not in f]
+    folders = [f for f in glob.glob(os.path.join(base_dir, '*')) if os.path.isdir(f)]
 
     for folder in folders:
         print(f"Processing folder: {folder}")
