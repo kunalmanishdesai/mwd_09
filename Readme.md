@@ -107,6 +107,6 @@ Find closest neighbours for a given model
 
 - `python task5.py 'hmdb51_extracted/target_videos/sword_exercise/Blade_Of_Fury_-_Scene_1_sword_exercise_f_cm_np1_ri_med_3.avi' 10`
 
-- `python task5.py 'sword/AHF_longsword_against_Rapier_and_Dagger_Fight_sword_f_cm_np2_ri_bad_0.avi' 10`
+- `python task5.py 'hmdb51_extracted/target_videos/sword/AHF_longsword_against_Rapier_and_Dagger_Fight_sword_f_cm_np2_ri_bad_0.avi' 10`
 
-- `python task5.py 'drink/CastAway2_drink_u_cm_np1_le_goo_8.avi' 10`
+- `python task5.py 'hmdb51_extracted/target_videos/drink/CastAway2_drink_u_cm_np1_le_goo_8.avi' 10`
