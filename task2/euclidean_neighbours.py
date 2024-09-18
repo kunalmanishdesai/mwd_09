@@ -9,26 +9,24 @@ def calculate_distances(hog_histogram, hof_histogram, csv_file):
     # Load the precomputed HoG and HoF histograms from the CSV file
     data = pd.read_csv(csv_file)
 
-    distances = []
+    # Extract filenames, HoG, and HoF histograms
+    filenames = data['video_name'].values
+    hog_histograms = data.iloc[:, 2:482].values  # HoG for 480 values (from column 2 to 482)
+    hof_histograms = data.iloc[:, 482:962].values  # HoF for 480 values (from column 482 to 962)
 
-    # Iterate through each row in the CSV file
-    for index, row in data.iterrows():
-        # Extract the video filename or path from the CSV
-        filename = row['video_name']  # Assuming the column is named 'video_name'
+    # Stack the target HoG and HoF histograms for the input video
+    combined_histogram = np.hstack([hog_histogram, hof_histogram]).reshape(1, -1)
 
-        # Extract HoG and HoF histograms from the CSV row
-        hog_hist_csv = row[2:482].values  # HoG from the 3rd column (index 2) for 480 values
-        hof_hist_csv = row[482:962].values  # HoF starts after HoG and also has 480 values
+    # Stack the HoG and HoF histograms for all the videos in the CSV
+    combined_histograms_csv = np.hstack([hog_histograms, hof_histograms])
 
-        # Compute Euclidean distance
-        hog_distance = np.linalg.norm(hog_histogram - hog_hist_csv)
-        hof_distance = np.linalg.norm(hof_histogram - hof_hist_csv)
+    # Compute the Euclidean distance between the input video and all other videos
+    distances = cdist(combined_histogram, combined_histograms_csv, metric='euclidean').flatten()
 
-        # Combine the distances
-        total_distance = hog_distance + hof_distance
-        distances.append((filename, total_distance))  # Store the filename and its distance
+    # Pair filenames with distances
+    distance_results = list(zip(filenames, distances))
 
-    return distances
+    return distance_results
 
 def get_top_k_neighbors(distances, k):
     """Sort the distances and return the top k neighbors."""
@@ -49,6 +47,7 @@ def bof_960(video_path, csv_file, k):
         print(f"Failed to extract histograms for video: {video_path}")
         return []
     
+    # Extract HoG and HoF histograms from the processed data
     hog_histogram = np.array([histogram_data[f'hog_histogram_bin_{i}'] for i in range(480)])
     hof_histogram = np.array([histogram_data[f'hof_histogram_bin_{i}'] for i in range(480)])
     
